@@ -59,8 +59,35 @@ class SimulationResult:
         return np.mean(self.incidence_runs, axis=0)
 
     @property
+    def incidence_sd(self) -> np.ndarray:
+        """Pointwise standard deviation of stochastic incidence trajectories."""
+        if self.incidence_runs.shape[0] <= 1:
+            return np.zeros_like(self.mean_incidence)
+        return np.std(self.incidence_runs, axis=0, ddof=1)
+
+    @property
     def mean_vector_prevalence(self) -> np.ndarray:
         return np.mean(self.vector_prevalence_runs, axis=0)
+
+    @property
+    def vector_prevalence_sd(self) -> np.ndarray:
+        """Pointwise standard deviation of stochastic vector-prevalence trajectories."""
+        if self.vector_prevalence_runs.shape[0] <= 1:
+            return np.zeros_like(self.mean_vector_prevalence)
+        return np.std(self.vector_prevalence_runs, axis=0, ddof=1)
+
+    @property
+    def incidence_by_variety_sd(self) -> dict[str, np.ndarray]:
+        """Pointwise standard deviations for each cultivar-specific incidence trajectory."""
+        output: dict[str, np.ndarray] = {}
+        for name, values in self.incidence_by_variety_runs.items():
+            if np.isnan(values).all():
+                output[name] = np.full(values.shape[1], np.nan, dtype=float)
+            elif values.shape[0] <= 1:
+                output[name] = np.zeros(values.shape[1], dtype=float)
+            else:
+                output[name] = np.nanstd(values, axis=0, ddof=1)
+        return output
 
     def summary(self) -> pd.DataFrame:
         return pd.DataFrame(
@@ -80,39 +107,112 @@ class SimulationResult:
         )
 
     def trajectory_dataframe(self) -> pd.DataFrame:
+        incidence_mean = self.mean_incidence
+        incidence_sd = self.incidence_sd
+        vector_mean = self.mean_vector_prevalence
+        vector_sd = self.vector_prevalence_sd
         data: dict[str, object] = {
             "time": self.time,
-            "incidence": self.mean_incidence,
-            "vector_prevalence": self.mean_vector_prevalence,
+            "incidence": incidence_mean,
+            "incidence_sd": incidence_sd,
+            "incidence_lower_1sd": np.clip(incidence_mean - incidence_sd, 0.0, 1.0),
+            "incidence_upper_1sd": np.clip(incidence_mean + incidence_sd, 0.0, 1.0),
+            "vector_prevalence": vector_mean,
+            "vector_prevalence_sd": vector_sd,
+            "vector_prevalence_lower_1sd": np.clip(vector_mean - vector_sd, 0.0, 1.0),
+            "vector_prevalence_upper_1sd": np.clip(vector_mean + vector_sd, 0.0, 1.0),
         }
+        by_variety_sd = self.incidence_by_variety_sd
         for name, values in self.incidence_by_variety_runs.items():
-            data[f"incidence_{name}"] = np.mean(values, axis=0)
+            mean = (
+                np.full(values.shape[1], np.nan, dtype=float)
+                if np.isnan(values).all()
+                else np.nanmean(values, axis=0)
+            )
+            sd = by_variety_sd[name]
+            data[f"incidence_{name}"] = mean
+            data[f"incidence_{name}_sd"] = sd
+            data[f"incidence_{name}_lower_1sd"] = np.clip(mean - sd, 0.0, 1.0)
+            data[f"incidence_{name}_upper_1sd"] = np.clip(mean + sd, 0.0, 1.0)
         return pd.DataFrame(data)
 
-    def plot_incidence(self, ax=None, *, by_variety: bool = False):
+    def plot_incidence(
+        self,
+        ax=None,
+        *,
+        by_variety: bool = False,
+        show_sd: bool = True,
+        sd_multiplier: float = 1.0,
+        envelope_alpha: float = 0.2,
+    ):
         try:
             import matplotlib.pyplot as plt
         except ImportError as exc:  # pragma: no cover
             raise ImportError("Install plotting support with `pip install cropmix[viz]`.") from exc
         if ax is None:
             _, ax = plt.subplots()
-        ax.plot(self.time, self.mean_incidence, label="field")
+        field_mean = self.mean_incidence
+        field_sd = self.incidence_sd
+        field_line = ax.plot(self.time, field_mean, label="field")[0]
+        if show_sd:
+            ax.fill_between(
+                self.time,
+                np.clip(field_mean - sd_multiplier * field_sd, 0.0, 1.0),
+                np.clip(field_mean + sd_multiplier * field_sd, 0.0, 1.0),
+                alpha=envelope_alpha,
+                color=field_line.get_color(),
+                linewidth=0,
+            )
         if by_variety:
+            by_variety_sd = self.incidence_by_variety_sd
             for name, values in self.incidence_by_variety_runs.items():
-                ax.plot(self.time, np.mean(values, axis=0), label=name)
+                mean = (
+                    np.full(values.shape[1], np.nan, dtype=float)
+                    if np.isnan(values).all()
+                    else np.nanmean(values, axis=0)
+                )
+                sd = by_variety_sd[name]
+                line = ax.plot(self.time, mean, label=name)[0]
+                if show_sd:
+                    ax.fill_between(
+                        self.time,
+                        np.clip(mean - sd_multiplier * sd, 0.0, 1.0),
+                        np.clip(mean + sd_multiplier * sd, 0.0, 1.0),
+                        alpha=envelope_alpha,
+                        color=line.get_color(),
+                        linewidth=0,
+                    )
         ax.set_xlabel("Time (days)")
         ax.set_ylabel("Infectious plant fraction")
         ax.legend()
         return ax
 
-    def plot_vector_prevalence(self, ax=None):
+    def plot_vector_prevalence(
+        self,
+        ax=None,
+        *,
+        show_sd: bool = True,
+        sd_multiplier: float = 1.0,
+        envelope_alpha: float = 0.2,
+    ):
         try:
             import matplotlib.pyplot as plt
         except ImportError as exc:  # pragma: no cover
             raise ImportError("Install plotting support with `pip install cropmix[viz]`.") from exc
         if ax is None:
             _, ax = plt.subplots()
-        ax.plot(self.time, self.mean_vector_prevalence)
+        mean = self.mean_vector_prevalence
+        sd = self.vector_prevalence_sd
+        line = ax.plot(self.time, mean)[0]
+        if show_sd:
+            ax.fill_between(
+                self.time,
+                np.clip(mean - sd_multiplier * sd, 0.0, 1.0),
+                np.clip(mean + sd_multiplier * sd, 0.0, 1.0),
+                alpha=envelope_alpha,
+                color=line.get_color(),
+                linewidth=0,
+            )
         ax.set_xlabel("Time (days)")
         ax.set_ylabel("Virus-bearing vector prevalence")
         return ax

@@ -10,3 +10,9 @@
 
 ## 0.1.0
 - Initial release.
+
+### Bundle revision 2026-08-24
+- `SimulationResult` now exposes pointwise stochastic trajectory standard deviations.
+- `trajectory_dataframe()` now includes mean, SD, and clipped mean ± 1 SD bounds.
+- Incidence and vector-prevalence plotting helpers can display ±1 SD envelopes while remaining backward compatible.
+- Publication-backend ensemble summaries now retain trajectory SD arrays in addition to full replicate matrices.

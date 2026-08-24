@@ -41,3 +41,28 @@ def test_more_than_two_varieties():
         seed=2,
     )
     assert set(result.incidence_by_variety_runs) == {"A", "B", "C"}
+
+
+def test_trajectory_statistics_are_exposed(cb_system):
+    field = cm.Field.rectangular(3, 4)
+    design = cm.MixtureDesign.random(field, {"SUSC": 6, "RES": 6}, seed=5)
+    scenario = cm.Scenario(duration=10, vectors_per_plant=2, inoculum=cm.Inoculum.random(1))
+    result = cm.simulate_mixture(design, cb_system, scenario, n_runs=4, seed=10)
+
+    expected_sd = np.std(result.incidence_runs, axis=0, ddof=1)
+    assert np.allclose(result.incidence_sd, expected_sd)
+    assert result.vector_prevalence_sd.shape == result.time.shape
+    assert set(result.incidence_by_variety_sd) == {"SUSC", "RES"}
+
+    frame = result.trajectory_dataframe()
+    required = {
+        "incidence",
+        "incidence_sd",
+        "incidence_lower_1sd",
+        "incidence_upper_1sd",
+        "vector_prevalence_sd",
+        "incidence_SUSC_sd",
+        "incidence_RES_sd",
+    }
+    assert required.issubset(frame.columns)
+    assert np.all((frame["incidence_lower_1sd"] >= 0) & (frame["incidence_upper_1sd"] <= 1))

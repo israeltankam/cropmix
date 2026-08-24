@@ -69,3 +69,12 @@ scenario = cropmix.Scenario(
 
 For random plant inoculum, locations are drawn independently for every stochastic
 replicate while remaining reproducible under the master seed.
+
+## Stochastic trajectory uncertainty
+
+`SimulationResult` retains every Monte Carlo trajectory. Pointwise stochastic
+variability is available through `incidence_sd`, `vector_prevalence_sd`, and
+`incidence_by_variety_sd`. `trajectory_dataframe()` includes the corresponding
+SD and clipped mean ± 1 SD envelope columns. By default, `plot_incidence()` and
+`plot_vector_prevalence()` draw these ±1 SD envelopes; pass `show_sd=False` to
+recover a mean-only plot.
