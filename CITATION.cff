@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: Cropmix
+message: "If you use Cropmix in research, please cite the software release and the methodological papers relevant to your analysis."
+type: software
+authors:
+  - family-names: "Tankam Chedjou"
+    given-names: "Israël"
+version: 0.1.0
+date-released: 2026-08-10
+license: GPL-3.0-or-later
+repository-code: "https://github.com/YOUR_GITHUB_USERNAME/cropmix"
+keywords:
+  - crop varietal mixtures
+  - plant epidemiology
+  - spatial stochastic modelling
+  - vector-borne plant viruses
+references:
+  - type: article
+    title: "Optimizing crop varietal mixtures for viral disease management: A case study on cassava virus epidemics"
+    authors:
+      - family-names: "Tankam Chedjou"
+        given-names: "Israël"
+      - family-names: "Donnelly"
+        given-names: "Ruairí"
+      - family-names: "Gilligan"
+        given-names: "Christopher A."
+    doi: "10.1371/journal.pcbi.1012842"
+  - type: article
+    title: "Plant pathogen profiling with the EpiPvr package"
+    authors:
+      - family-names: "Donnelly"
+        given-names: "Ruairí"
+      - family-names: "Tankam Chedjou"
+        given-names: "Israël"
+      - family-names: "Gilligan"
+        given-names: "Christopher A."
+    doi: "10.1111/2041-210X.70219"

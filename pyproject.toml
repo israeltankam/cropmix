@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cropmix"
+version = "0.2.0"
+description = "Spatial simulation and optimization of crop varietal mixtures under vector-borne disease pressure"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [
+  {name = "Israël Tankam Chedjou"}
+]
+keywords = [
+  "crop mixtures",
+  "plant epidemiology",
+  "vector-borne disease",
+  "spatial epidemiology",
+  "Gillespie",
+  "EpiPvr",
+  "agriculture"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "scipy>=1.10",
+  "numba>=0.61"
+]
+
+[project.optional-dependencies]
+viz = [
+  "matplotlib>=3.7"
+]
+docs = [
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocstrings[python]>=0.26"
+]
+dev = [
+  "build>=1.2",
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.6",
+  "twine>=5"
+]
+all = [
+  "matplotlib>=3.7",
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocstrings[python]>=0.26",
+  "build>=1.2",
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.6",
+  "twine>=5"
+]
+
+[project.scripts]
+cropmix = "cropmix.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/israeltankam/cropmix"
+Documentation = "https://israeltankam.github.io/cropmix/"
+Repository = "https://github.com/israeltankam/cropmix"
+Issues = "https://github.com/israeltankam/cropmix/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"cropmix" = ["py.typed"]
+"cropmix.epipvr" = ["resources/*.R"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]

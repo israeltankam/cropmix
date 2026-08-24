@@ -1,0 +1,46 @@
+site_name: Cropmix
+site_description: Spatial simulation and optimization of crop varietal mixtures under vector-borne disease pressure
+site_url: https://YOUR_GITHUB_USERNAME.github.io/cropmix/
+repo_url: https://github.com/YOUR_GITHUB_USERNAME/cropmix
+repo_name: YOUR_GITHUB_USERNAME/cropmix
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Quick start: quickstart.md
+  - Modelling hierarchy: concepts.md
+  - Field geometry & designs: geometry.md
+  - Spatial simulation: simulation.md
+  - Mean field & kernel calibration: calibration.md
+  - Optimization: optimization.md
+  - EpiPvr bridge: epipvr.md
+  - API reference: api.md
+  - Development: development.md
+  - Publishing & hosting: publishing.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: numpy
+            show_source: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
