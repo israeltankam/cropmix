@@ -333,29 +333,29 @@ This branching-process quantity is an **early-invasion probability**, not the sa
 
 ## Conservative vector exchange
 
-For an unordered plant pair \(\{i,j\}\), Cropmix builds a symmetric row-stochastic distance matrix \(P\) and uses the physical pair-exchange rate
+For an unordered plant pair $\{i,j\}$, Cropmix builds a symmetric row-stochastic distance matrix \(P\) and uses the physical pair-exchange rate
 
-\[
+$$
 \lambda_{ij}=m\sigma P_{ij}.
-\]
+$$
 
 A swap chooses one vector at each plant and exchanges them. Therefore each plant retains exactly \(m\) vectors. Because
 
-\[
+$$
 \sum_j P_{ij}=1,
-\]
+$$
 
 a tagged vector has total movement rate
 
-\[
+$$
 \sum_j \lambda_{ij}/m = \sigma.
-\]
+$$
 
 The finite-field matrix is obtained by symmetrically balancing the raw exponential weights
 
-\[
+$$
 K(d)=e^{-d/a}.
-\]
+$$
 
 This avoids the reciprocity problem created by ordinary row normalization near open field boundaries.
 
