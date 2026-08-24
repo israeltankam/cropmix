@@ -16,12 +16,12 @@ The deterministic PLOS mixture model is retained as a **mean-field reference** f
 
 The full long-term predictive target is
 
-\[
+\$$
 p(\mathcal O\mid D,z)
 =
 \int p_{\mathrm{CTMC}}(\mathcal O\mid z,\Theta)
        p_{\mathrm{EpiPvr}}(\Theta\mid D)\,d\Theta,
-\]
+\$$
 
 where `D` is access-period data, `Theta` is a coherent set of transmission parameters, and `z` is a planting design.
 
