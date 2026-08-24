@@ -14,11 +14,9 @@ Cropmix is designed to connect three modelling layers without conflating them:
 
 The deterministic PLOS mixture model is retained as a **mean-field reference** for consistency checks and kernel-scale calibration.
 
-The full long-term predictive target is
+The full long-term predictive target is 
 
-$$
-p(\mathcal O\mid D,z)
-=
+$$ p(\mathcal O\mid D,z) =
 \int p_{\mathrm{CTMC}}(\mathcal O\mid z,\Theta)
        p_{\mathrm{EpiPvr}}(\Theta\mid D)\,d\Theta,
 $$
