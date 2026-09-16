@@ -22,7 +22,7 @@ That calculation concerns stochastic extinction versus establishment when infect
 
 ## Mean field
 
-The PLOS mixture model provides deterministic population-average dynamics. Cropmix generalizes the SPT form to an arbitrary number of varieties and uses it as a consistency reference.
+The [meanfield mixture model](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012842) provides deterministic population-average dynamics. Cropmix generalizes the SPT form to an arbitrary number of varieties and uses it as a consistency reference.
 
 ## Spatial Gillespie CTMC
 
