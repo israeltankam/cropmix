@@ -75,7 +75,7 @@ Run:
 
 ```bash
 pytest
-ruff check .
+ruff check src tests
 mkdocs build --strict
 ```
 
