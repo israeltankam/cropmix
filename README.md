@@ -60,7 +60,7 @@ python -m pip install "cropmix[dev,viz,docs]"
 From a cloned repository during development:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/cropmix.git
+git clone https://github.com/israeltankam/cropmix.git
 cd cropmix
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
