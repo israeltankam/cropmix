@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.1
 - Reframed mean-field matching as a consistency/adequacy diagnostic rather than biological kernel calibration.
 - Added `assess_mean_field_consistency()` and retained `calibrate_kernel()` as a deprecated alias.
 - Default simulation horizon is 300 d.
