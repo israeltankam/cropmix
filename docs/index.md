@@ -17,10 +17,9 @@ Cropmix is designed around a modelling hierarchy:
 
 1. EpiPvr infers transmission parameters from access-period experiments using Bayesian models.
 2. EpiPvr can propagate those parameters into branching-process estimates of early epidemic establishment probability.
-3. The PLOS mixture ODE provides a deterministic mean-field reference.
-4. Cropmix uses a finite spatial Gillespie CTMC to simulate complete epidemics and compare planting arrangements.
+3. Cropmix uses a finite spatial Gillespie CTMC to simulate complete epidemics and compare planting arrangements.
 
-The current spatial engine implements **semi-persistent transmission (SPT)**. PT inference is available through the EpiPvr bridge, but PT spatial dynamics are intentionally not guessed.
+The current spatial engine rigorously implements **semi-persistent transmission (SPT)**. PT inference is available through the EpiPvr bridge, but PT spatial dynamics are intentionally guessed through approximation of infection parameters as it lacks explicit compartment of latently infected vectors.
 
 ## Installation
 
