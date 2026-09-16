@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Tankam Chedjou"
     given-names: "Israël"
-version: 0.1.0
+version: 0.2.2
 date-released: 2026-08-10
 license: GPL-3.0-or-later
 repository-code: "https://github.com/israeltankam/cropmix"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cropmix"
-version = "0.2.1"
+version = "0.2.2"
 description = "Spatial simulation and optimization of crop varietal mixtures under vector-borne disease pressure"
 readme = "README.md"
 requires-python = ">=3.10"
