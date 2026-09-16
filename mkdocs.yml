@@ -1,8 +1,8 @@
 site_name: Cropmix
 site_description: Spatial simulation and optimization of crop varietal mixtures under vector-borne disease pressure
-site_url: https://YOUR_GITHUB_USERNAME.github.io/cropmix/
-repo_url: https://github.com/YOUR_GITHUB_USERNAME/cropmix
-repo_name: YOUR_GITHUB_USERNAME/cropmix
+site_url: https://israeltankam.github.io/cropmix/
+repo_url: https://github.com/israeltankam/cropmix
+repo_name: israeltankam/cropmix
 
 theme:
   name: material

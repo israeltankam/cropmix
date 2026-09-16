@@ -1,0 +1,326 @@
+warning: in the working copy of 'CHANGELOG.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/simulation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'pyproject.toml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/cropmix/publication_backend.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/cropmix/results.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_simulation.py', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/CHANGELOG.md b/CHANGELOG.md[m
+[1mindex 74bdddc..382603f 100644[m
+[1m--- a/CHANGELOG.md[m
+[1m+++ b/CHANGELOG.md[m
+[36m@@ -10,3 +10,9 @@[m
+ [m
+ ## 0.1.0[m
+ - Initial release.[m
+[32m+[m
+[32m+[m[32m### Bundle revision 2026-08-24[m
+[32m+[m[32m- `SimulationResult` now exposes pointwise stochastic trajectory standard deviations.[m
+[32m+[m[32m- `trajectory_dataframe()` now includes mean, SD, and clipped mean ± 1 SD bounds.[m
+[32m+[m[32m- Incidence and vector-prevalence plotting helpers can display ±1 SD envelopes while remaining backward compatible.[m
+[32m+[m[32m- Publication-backend ensemble summaries now retain trajectory SD arrays in addition to full replicate matrices.[m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex f4a5b17..22298cf 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -14,14 +14,12 @@[m [mCropmix is designed to connect three modelling layers without conflating them:[m
+ [m
+ The deterministic PLOS mixture model is retained as a **mean-field reference** for consistency checks and kernel-scale calibration.[m
+ [m
+[31m-The full long-term predictive target is[m
+[32m+[m[32mThe full long-term predictive target is[m[41m [m
+ [m
+[31m-\[[m
+[31m-p(\mathcal O\mid D,z)[m
+[31m-=[m
+[32m+[m[32m$$ p(\mathcal O\mid D,z) =[m
+ \int p_{\mathrm{CTMC}}(\mathcal O\mid z,\Theta)[m
+        p_{\mathrm{EpiPvr}}(\Theta\mid D)\,d\Theta,[m
+[31m-\][m
+[32m+[m[32m$$[m
+ [m
+ where `D` is access-period data, `Theta` is a coherent set of transmission parameters, and `z` is a planting design.[m
+ [m
+[36m@@ -335,29 +333,29 @@[m [mThis branching-process quantity is an **early-invasion probability**, not the sa[m
+ [m
+ ## Conservative vector exchange[m
+ [m
+[31m-For an unordered plant pair \(\{i,j\}\), Cropmix builds a symmetric row-stochastic distance matrix \(P\) and uses the physical pair-exchange rate[m
+[32m+[m[32mFor an unordered plant pair $\{i,j\}$, Cropmix builds a symmetric row-stochastic distance matrix \(P\) and uses the physical pair-exchange rate[m
+ [m
+[31m-\[[m
+[32m+[m[32m$$[m
+ \lambda_{ij}=m\sigma P_{ij}.[m
+[31m-\][m
+[32m+[m[32m$$[m
+ [m
+ A swap chooses one vector at each plant and exchanges them. Therefore each plant retains exactly \(m\) vectors. Because[m
+ [m
+[31m-\[[m
+[32m+[m[32m$$[m
+ \sum_j P_{ij}=1,[m
+[31m-\][m
+[32m+[m[32m$$[m
+ [m
+ a tagged vector has total movement rate[m
+ [m
+[31m-\[[m
+[32m+[m[32m$$[m
+ \sum_j \lambda_{ij}/m = \sigma.[m
+[31m-\][m
+[32m+[m[32m$$[m
+ [m
+ The finite-field matrix is obtained by symmetrically balancing the raw exponential weights[m
+ [m
+[31m-\[[m
+[32m+[m[32m$$[m
+ K(d)=e^{-d/a}.[m
+[31m-\][m
+[32m+[m[32m$$[m
+ [m
+ This avoids the reciprocity problem created by ordinary row normalization near open field boundaries.[m
+ [m
+[1mdiff --git a/docs/simulation.md b/docs/simulation.md[m
+[1mindex 065f1e1..41d044b 100644[m
+[1m--- a/docs/simulation.md[m
+[1m+++ b/docs/simulation.md[m
+[36m@@ -69,3 +69,12 @@[m [mscenario = cropmix.Scenario([m
+ [m
+ For random plant inoculum, locations are drawn independently for every stochastic[m
+ replicate while remaining reproducible under the master seed.[m
+[32m+[m
+[32m+[m[32m## Stochastic trajectory uncertainty[m
+[32m+[m
+[32m+[m[32m`SimulationResult` retains every Monte Carlo trajectory. Pointwise stochastic[m
+[32m+[m[32mvariability is available through `incidence_sd`, `vector_prevalence_sd`, and[m
+[32m+[m[32m`incidence_by_variety_sd`. `trajectory_dataframe()` includes the corresponding[m
+[32m+[m[32mSD and clipped mean ± 1 SD envelope columns. By default, `plot_incidence()` and[m
+[32m+[m[32m`plot_vector_prevalence()` draw these ±1 SD envelopes; pass `show_sd=False` to[m
+[32m+[m[32mrecover a mean-only plot.[m
+[1mdiff --git a/pyproject.toml b/pyproject.toml[m
+[1mindex cd650a8..6194e59 100644[m
+[1m--- a/pyproject.toml[m
+[1m+++ b/pyproject.toml[m
+[36m@@ -4,7 +4,7 @@[m [mbuild-backend = "setuptools.build_meta"[m
+ [m
+ [project][m
+ name = "cropmix"[m
+[31m-version = "0.2.0"[m
+[32m+[m[32mversion = "0.2.1"[m
+ description = "Spatial simulation and optimization of crop varietal mixtures under vector-borne disease pressure"[m
+ readme = "README.md"[m
+ requires-python = ">=3.10"[m
+[1mdiff --git a/src/cropmix/publication_backend.py b/src/cropmix/publication_backend.py[m
+[1mindex 64cf69f..90cc3da 100644[m
+[1m--- a/src/cropmix/publication_backend.py[m
+[1m+++ b/src/cropmix/publication_backend.py[m
+[36m@@ -793,9 +793,13 @@[m [mdef run_ensemble([m
+         "final_incidence_sd": float(np.std(finals, ddof=1)) if len(finals) > 1 else 0.0,[m
+         "final_incidence_mcse": mcse(finals),[m
+         "mean_incidence": incidence.mean(axis=0),[m
+[32m+[m[32m        "incidence_sd": (np.std(incidence, axis=0, ddof=1) if len(incidence) > 1 else np.zeros(incidence.shape[1])),[m
+         "mean_vector_prevalence": vectors.mean(axis=0),[m
+[32m+[m[32m        "vector_prevalence_sd": (np.std(vectors, axis=0, ddof=1) if len(vectors) > 1 else np.zeros(vectors.shape[1])),[m
+         "mean_incidence_susc": (np.nanmean(incidence_susc, axis=0) if not np.isnan(incidence_susc).all() else np.full(incidence_susc.shape[1], np.nan)),[m
+[32m+[m[32m        "incidence_susc_sd": (np.nanstd(incidence_susc, axis=0, ddof=1) if len(incidence_susc) > 1 and not np.isnan(incidence_susc).all() else np.zeros(incidence_susc.shape[1])),[m
+         "mean_incidence_res": (np.nanmean(incidence_res, axis=0) if not np.isnan(incidence_res).all() else np.full(incidence_res.shape[1], np.nan)),[m
+[32m+[m[32m        "incidence_res_sd": (np.nanstd(incidence_res, axis=0, ddof=1) if len(incidence_res) > 1 and not np.isnan(incidence_res).all() else np.zeros(incidence_res.shape[1])),[m
+         "mean_event_count": float(np.mean(event_counts)),[m
+         "runtime_seconds": time.time() - start,[m
+         "kernel_scale": kernel.scale,[m
+[1mdiff --git a/src/cropmix/results.py b/src/cropmix/results.py[m
+[1mindex 78bc594..eed71c8 100644[m
+[1m--- a/src/cropmix/results.py[m
+[1m+++ b/src/cropmix/results.py[m
+[36m@@ -58,10 +58,37 @@[m [mclass SimulationResult:[m
+     def mean_incidence(self) -> np.ndarray:[m
+         return np.mean(self.incidence_runs, axis=0)[m
+ [m
+[32m+[m[32m    @property[m
+[32m+[m[32m    def incidence_sd(self) -> np.ndarray:[m
+[32m+[m[32m        """Pointwise standard deviation of stochastic incidence trajectories."""[m
+[32m+[m[32m        if self.incidence_runs.shape[0] <= 1:[m
+[32m+[m[32m            return np.zeros_like(self.mean_incidence)[m
+[32m+[m[32m        return np.std(self.incidence_runs, axis=0, ddof=1)[m
+[32m+[m
+     @property[m
+     def mean_vector_prevalence(self) -> np.ndarray:[m
+         return np.mean(self.vector_prevalence_runs, axis=0)[m
+ [m
+[32m+[m[32m    @property[m
+[32m+[m[32m    def vector_prevalence_sd(self) -> np.ndarray:[m
+[32m+[m[32m        """Pointwise standard deviation of stochastic vector-prevalence trajectories."""[m
+[32m+[m[32m        if self.vector_prevalence_runs.shape[0] <= 1:[m
+[32m+[m[32m            return np.zeros_like(self.mean_vector_prevalence)[m
+[32m+[m[32m        return np.std(self.vector_prevalence_runs, axis=0, ddof=1)[m
+[32m+[m
+[32m+[m[32m    @property[m
+[32m+[m[32m    def incidence_by_variety_sd(self) -> dict[str, np.ndarray]:[m
+[32m+[m[32m        """Pointwise standard deviations for each cultivar-specific incidence trajectory."""[m
+[32m+[m[32m        output: dict[str, np.ndarray] = {}[m
+[32m+[m[32m        for name, values in self.incidence_by_variety_runs.items():[m
+[32m+[m[32m            if np.isnan(values).all():[m
+[32m+[m[32m                output[name] = np.full(values.shape[1], np.nan, dtype=float)[m
+[32m+[m[32m            elif values.shape[0] <= 1:[m
+[32m+[m[32m                output[name] = np.zeros(values.shape[1], dtype=float)[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                output[name] = np.nanstd(values, axis=0, ddof=1)[m
+[32m+[m[32m        return output[m
+[32m+[m
+     def summary(self) -> pd.DataFrame:[m
+         return pd.DataFrame([m
+             [[m
+[36m@@ -80,39 +107,112 @@[m [mclass SimulationResult:[m
+         )[m
+ [m
+     def trajectory_dataframe(self) -> pd.DataFrame:[m
+[32m+[m[32m        incidence_mean = self.mean_incidence[m
+[32m+[m[32m        incidence_sd = self.incidence_sd[m
+[32m+[m[32m        vector_mean = self.mean_vector_prevalence[m
+[32m+[m[32m        vector_sd = self.vector_prevalence_sd[m
+         data: dict[str, object] = {[m
+             "time": self.time,[m
+[31m-            "incidence": self.mean_incidence,[m
+[31m-            "vector_prevalence": self.mean_vector_prevalence,[m
+[32m+[m[32m            "incidence": incidence_mean,[m
+[32m+[m[32m            "incidence_sd": incidence_sd,[m
+[32m+[m[32m            "incidence_lower_1sd": np.clip(incidence_mean - incidence_sd, 0.0, 1.0),[m
+[32m+[m[32m            "incidence_upper_1sd": np.clip(incidence_mean + incidence_sd, 0.0, 1.0),[m
+[32m+[m[32m            "vector_prevalence": vector_mean,[m
+[32m+[m[32m            "vector_prevalence_sd": vector_sd,[m
+[32m+[m[32m            "vector_prevalence_lower_1sd": np.clip(vector_mean - vector_sd, 0.0, 1.0),[m
+[32m+[m[32m            "vector_prevalence_upper_1sd": np.clip(vector_mean + vector_sd, 0.0, 1.0),[m
+         }[m
+[32m+[m[32m        by_variety_sd = self.incidence_by_variety_sd[m
+         for name, values in self.incidence_by_variety_runs.items():[m
+[31m-            data[f"incidence_{name}"] = np.mean(values, axis=0)[m
+[32m+[m[32m            mean = ([m
+[32m+[m[32m                np.full(values.shape[1], np.nan, dtype=float)[m
+[32m+[m[32m                if np.isnan(values).all()[m
+[32m+[m[32m                else np.nanmean(values, axis=0)[m
+[32m+[m[32m            )[m
+[32m+[m[32m            sd = by_variety_sd[name][m
+[32m+[m[32m            data[f"incidence_{name}"] = mean[m
+[32m+[m[32m            data[f"incidence_{name}_sd"] = sd[m
+[32m+[m[32m            data[f"incidence_{name}_lower_1sd"] = np.clip(mean - sd, 0.0, 1.0)[m
+[32m+[m[32m            data[f"incidence_{name}_upper_1sd"] = np.clip(mean + sd, 0.0, 1.0)[m
+         return pd.DataFrame(data)[m
+ [m
+[31m-    def plot_incidence(self, ax=None, *, by_variety: bool = False):[m
+[32m+[m[32m    def plot_incidence([m
+[32m+[m[32m        self,[m
+[32m+[m[32m        ax=None,[m
+[32m+[m[32m        *,[m
+[32m+[m[32m        by_variety: bool = False,[m
+[32m+[m[32m        show_sd: bool = True,[m
+[32m+[m[32m        sd_multiplier: float = 1.0,[m
+[32m+[m[32m        envelope_alpha: float = 0.2,[m
+[32m+[m[32m    ):[m
+         try:[m
+             import matplotlib.pyplot as plt[m
+         except ImportError as exc:  # pragma: no cover[m
+             raise ImportError("Install plotting support with `pip install cropmix[viz]`.") from exc[m
+         if ax is None:[m
+             _, ax = plt.subplots()[m
+[31m-        ax.plot(self.time, self.mean_incidence, label="field")[m
+[32m+[m[32m        field_mean = self.mean_incidence[m
+[32m+[m[32m        field_sd = self.incidence_sd[m
+[32m+[m[32m        field_line = ax.plot(self.time, field_mean, label="field")[0][m
+[32m+[m[32m        if show_sd:[m
+[32m+[m[32m            ax.fill_between([m
+[32m+[m[32m                self.time,[m
+[32m+[m[32m                np.clip(field_mean - sd_multiplier * field_sd, 0.0, 1.0),[m
+[32m+[m[32m                np.clip(field_mean + sd_multiplier * field_sd, 0.0, 1.0),[m
+[32m+[m[32m                alpha=envelope_alpha,[m
+[32m+[m[32m                color=field_line.get_color(),[m
+[32m+[m[32m                linewidth=0,[m
+[32m+[m[32m            )[m
+         if by_variety:[m
+[32m+[m[32m            by_variety_sd = self.incidence_by_variety_sd[m
+             for name, values in self.incidence_by_variety_runs.items():[m
+[31m-                ax.plot(self.time, np.mean(values, axis=0), label=name)[m
+[32m+[m[32m                mean = ([m
+[32m+[m[32m                    np.full(values.shape[1], np.nan, dtype=float)[m
+[32m+[m[32m                    if np.isnan(values).all()[m
+[32m+[m[32m                    else np.nanmean(values, axis=0)[m
+[32m+[m[32m                )[m
+[32m+[m[32m                sd = by_variety_sd[name][m
+[32m+[m[32m                line = ax.plot(self.time, mean, label=name)[0][m
+[32m+[m[32m                if show_sd:[m
+[32m+[m[32m                    ax.fill_between([m
+[32m+[m[32m                        self.time,[m
+[32m+[m[32m                        np.clip(mean - sd_multiplier * sd, 0.0, 1.0),[m
+[32m+[m[32m                        np.clip(mean + sd_multiplier * sd, 0.0, 1.0),[m
+[32m+[m[32m                        alpha=envelope_alpha,[m
+[32m+[m[32m                        color=line.get_color(),[m
+[32m+[m[32m                        linewidth=0,[m
+[32m+[m[32m                    )[m
+         ax.set_xlabel("Time (days)")[m
+         ax.set_ylabel("Infectious plant fraction")[m
+         ax.legend()[m
+         return ax[m
+ [m
+[31m-    def plot_vector_prevalence(self, ax=None):[m
+[32m+[m[32m    def plot_vector_prevalence([m
+[32m+[m[32m        self,[m
+[32m+[m[32m        ax=None,[m
+[32m+[m[32m        *,[m
+[32m+[m[32m        show_sd: bool = True,[m
+[32m+[m[32m        sd_multiplier: float = 1.0,[m
+[32m+[m[32m        envelope_alpha: float = 0.2,[m
+[32m+[m[32m    ):[m
+         try:[m
+             import matplotlib.pyplot as plt[m
+         except ImportError as exc:  # pragma: no cover[m
+             raise ImportError("Install plotting support with `pip install cropmix[viz]`.") from exc[m
+         if ax is None:[m
+             _, ax = plt.subplots()[m
+[31m-        ax.plot(self.time, self.mean_vector_prevalence)[m
+[32m+[m[32m        mean = self.mean_vector_prevalence[m
+[32m+[m[32m        sd = self.vector_prevalence_sd[m
+[32m+[m[32m        line = ax.plot(self.time, mean)[0][m
+[32m+[m[32m        if show_sd:[m
+[32m+[m[32m            ax.fill_between([m
+[32m+[m[32m                self.time,[m
+[32m+[m[32m                np.clip(mean - sd_multiplier * sd, 0.0, 1.0),[m
+[32m+[m[32m                np.clip(mean + sd_multiplier * sd, 0.0, 1.0),[m
+[32m+[m[32m                alpha=envelope_alpha,[m
+[32m+[m[32m                color=line.get_color(),[m
+[32m+[m[32m                linewidth=0,[m
+[32m+[m[32m            )[m
+         ax.set_xlabel("Time (days)")[m
+         ax.set_ylabel("Virus-bearing vector prevalence")[m
+         return ax[m
+[1mdiff --git a/tests/test_simulation.py b/tests/test_simulation.py[m
+[1mindex c5bf671..438b077 100644[m
+[1m--- a/tests/test_simulation.py[m
+[1m+++ b/tests/test_simulation.py[m
+[36m@@ -41,3 +41,28 @@[m [mdef test_more_than_two_varieties():[m
+         seed=2,[m
+     )[m
+     assert set(result.incidence_by_variety_runs) == {"A", "B", "C"}[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef test_trajectory_statistics_are_exposed(cb_system):[m
+[32m+[m[32m    field = cm.Field.rectangular(3, 4)[m
+[32m+[m[32m    design = cm.MixtureDesign.random(field, {"SUSC": 6, "RES": 6}, seed=5)[m
+[32m+[m[32m    scenario = cm.Scenario(duration=10, vectors_per_plant=2, inoculum=cm.Inoculum.random(1))[m
+[32m+[m[32m    result = cm.simulate_mixture(design, cb_system, scenario, n_runs=4, seed=10)[m
+[32m+[m
+[32m+[m[32m    expected_sd = np.std(result.incidence_runs, axis=0, ddof=1)[m
+[32m+[m[32m    assert np.allclose(result.incidence_sd, expected_sd)[m
+[32m+[m[32m    assert result.vector_prevalence_sd.shape == result.time.shape[m
+[32m+[m[32m    assert set(result.incidence_by_variety_sd) == {"SUSC", "RES"}[m
+[32m+[m
+[32m+[m[32m    frame = result.trajectory_dataframe()[m
+[32m+[m[32m    required = {[m
+[32m+[m[32m        "incidence",[m
+[32m+[m[32m        "incidence_sd",[m
+[32m+[m[32m        "incidence_lower_1sd",[m
+[32m+[m[32m        "incidence_upper_1sd",[m
+[32m+[m[32m        "vector_prevalence_sd",[m
+[32m+[m[32m        "incidence_SUSC_sd",[m
+[32m+[m[32m        "incidence_RES_sd",[m
+[32m+[m[32m    }[m
+[32m+[m[32m    assert required.issubset(frame.columns)[m
+[32m+[m[32m    assert np.all((frame["incidence_lower_1sd"] >= 0) & (frame["incidence_upper_1sd"] <= 1))[m

@@ -8,21 +8,21 @@ python -m pip install cropmix
 
 The recommended stack is GitHub + GitHub Actions + PyPI Trusted Publishing + GitHub Pages + Zenodo.
 
----
+\---
 
-## 1. Replace repository placeholders
+## 1\. Replace repository placeholders
 
 Search the repository for:
 
 ```text
-YOUR_GITHUB_USERNAME
+YOUR\_GITHUB\_USERNAME
 ```
 
 and replace it in:
 
-- `pyproject.toml`
-- `mkdocs.yml`
-- `CITATION.cff`
+* `pyproject.toml`
+* `mkdocs.yml`
+* `CITATION.cff`
 
 Also review the package author, license, project description, and URLs before the first public release.
 
@@ -36,9 +36,9 @@ name = "cropmix"
 
 PyPI project names are globally unique. Check `https://pypi.org/project/cropmix/` immediately before publication. A missing page today does not reserve the name for you.
 
----
+\---
 
-## 2. Create the Git repository locally
+## 2\. Create the Git repository locally
 
 From the repository root:
 
@@ -52,23 +52,23 @@ git branch -M main
 Create a new empty GitHub repository named `cropmix`, then connect it:
 
 ```bash
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/cropmix.git
+git remote add origin https://github.com/YOUR\_GITHUB\_USERNAME/cropmix.git
 git push -u origin main
 ```
 
 Do not upload an existing `.venv`, `dist/`, or secrets. They are already covered by `.gitignore`.
 
----
+\---
 
-## 3. Validate locally before publishing anything
+## 3\. Validate locally before publishing anything
 
 Create a clean virtual environment:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
+source .venv/bin/activate          # Windows PowerShell: .venv\\Scripts\\Activate.ps1
 python -m pip install -U pip
-python -m pip install -e ".[dev,viz,docs]"
+python -m pip install -e ".\[dev,viz,docs]"
 ```
 
 Run:
@@ -84,7 +84,7 @@ Then build the package:
 ```bash
 rm -rf dist build
 python -m build
-python -m twine check dist/*
+python -m twine check dist/\*
 ```
 
 You should obtain both a source distribution and a wheel in `dist/`.
@@ -95,13 +95,13 @@ Test the wheel in a second clean environment rather than only testing the editab
 python -m venv /tmp/cropmix-wheel-test
 source /tmp/cropmix-wheel-test/bin/activate
 python -m pip install dist/cropmix-0.1.0-py3-none-any.whl
-python -c "import cropmix; print(cropmix.__version__)"
+python -c "import cropmix; print(cropmix.\_\_version\_\_)"
 cropmix doctor
 ```
 
----
+\---
 
-## 4. Let GitHub Actions run CI
+## 4\. Let GitHub Actions run CI
 
 `.github/workflows/ci.yml` runs the test suite on supported Python versions for pushes and pull requests.
 
@@ -113,24 +113,24 @@ GitHub repository → Actions → CI
 
 Do not publish to PyPI until CI is green.
 
----
+\---
 
-## 5. Optional but recommended: test on TestPyPI
+## 5\. Optional but recommended: test on TestPyPI
 
 Create an account at TestPyPI if you do not already have one.
 
 You can upload a local build with Twine:
 
 ```bash
-python -m twine upload --repository testpypi dist/*
+python -m twine upload --repository testpypi dist/\*
 ```
 
 Then test installation in a fresh environment:
 
 ```bash
-python -m pip install \
-  --index-url https://test.pypi.org/simple/ \
-  --extra-index-url https://pypi.org/simple/ \
+python -m pip install \\
+  --index-url https://test.pypi.org/simple/ \\
+  --extra-index-url https://pypi.org/simple/ \\
   cropmix
 ```
 
@@ -138,9 +138,9 @@ The extra PyPI index is useful because Cropmix's ordinary dependencies are not n
 
 If you prefer, configure TestPyPI Trusted Publishing in the same manner as production PyPI instead of storing an API token.
 
----
+\---
 
-## 6. Configure production PyPI Trusted Publishing
+## 6\. Configure production PyPI Trusted Publishing
 
 PyPI Trusted Publishing uses GitHub's OpenID Connect identity. It avoids storing a long-lived PyPI token in repository secrets.
 
@@ -164,7 +164,7 @@ Use these values:
 
 ```text
 PyPI project name: cropmix
-GitHub owner: YOUR_GITHUB_USERNAME
+GitHub owner: YOUR\_GITHUB\_USERNAME
 GitHub repository: cropmix
 Workflow filename: release.yml
 Environment: pypi
@@ -182,18 +182,18 @@ Settings → Environments → New environment → pypi
 
 For a scientific package, configure a required reviewer if practical. This prevents an accidental release event from publishing immediately.
 
-No `PYPI_API_TOKEN` secret is required by the supplied workflow.
+No `PYPI\_API\_TOKEN` secret is required by the supplied workflow.
 
----
+\---
 
-## 7. Make the first release
+## 7\. Make the first release
 
 Update the version in:
 
-- `pyproject.toml`
-- `src/cropmix/__init__.py`
-- `CITATION.cff`
-- `CHANGELOG.md`
+* `pyproject.toml`
+* `src/cropmix/\_\_init\_\_.py`
+* `CITATION.cff`
+* `CHANGELOG.md`
 
 Commit and push:
 
@@ -232,12 +232,12 @@ After the workflow completes, test:
 python -m venv /tmp/cropmix-pypi-test
 source /tmp/cropmix-pypi-test/bin/activate
 python -m pip install cropmix
-python -c "import cropmix; print(cropmix.__version__)"
+python -c "import cropmix; print(cropmix.\_\_version\_\_)"
 ```
 
----
+\---
 
-## 8. Publish the documentation with GitHub Pages
+## 8\. Publish the documentation with GitHub Pages
 
 The supplied workflow is:
 
@@ -258,7 +258,7 @@ Then push to `main` or manually run the docs workflow.
 The default URL will be approximately:
 
 ```text
-https://YOUR_GITHUB_USERNAME.github.io/cropmix/
+https://YOUR\_GITHUB\_USERNAME.github.io/cropmix/
 ```
 
 Once live, make sure the `Documentation` URL in `pyproject.toml` points there.
@@ -269,9 +269,9 @@ To preview locally:
 mkdocs serve
 ```
 
----
+\---
 
-## 9. Connect the repository to Zenodo
+## 9\. Connect the repository to Zenodo
 
 Zenodo can archive each GitHub release and mint a DOI.
 
@@ -287,9 +287,9 @@ Zenodo can archive each GitHub release and mint a DOI.
 
 Use the Zenodo concept DOI for citing the software family and version DOIs when exact reproducibility of a specific release matters.
 
----
+\---
 
-## 10. EpiPvr on users' machines
+## 10\. EpiPvr on users' machines
 
 `pip install cropmix` does **not** install R. This is intentional.
 
@@ -315,9 +315,9 @@ Cropmix calls `Rscript` internally. Users do not need to open R during ordinary 
 
 Do not vendor an entire R installation into the PyPI wheel.
 
----
+\---
 
-## 11. Release discipline
+## 11\. Release discipline
 
 A useful version scheme is semantic versioning:
 
@@ -335,38 +335,38 @@ pytest
 ruff check .
 mkdocs build --strict
 python -m build
-python -m twine check dist/*
+python -m twine check dist/\*
 ```
 
 Also verify:
 
-- package version;
-- changelog;
-- citation metadata;
-- documentation examples;
-- numerical regression tests;
-- the EpiPvr bridge against the CRAN version you support;
-- whether model assumptions changed.
+* package version;
+* changelog;
+* citation metadata;
+* documentation examples;
+* numerical regression tests;
+* the EpiPvr bridge against the CRAN version you support;
+* whether model assumptions changed.
 
----
+\---
 
-## 12. What should be hosted where?
+## 12\. What should be hosted where?
 
-| Asset | Recommended home |
-|---|---|
-| Source code | GitHub |
-| Installable Python distributions | PyPI |
-| User/manual/API documentation | GitHub Pages |
-| Tagged release source archive + DOI | Zenodo |
-| Large benchmark datasets | Zenodo or another research-data repository |
-| CI logs/tests | GitHub Actions |
-| Issues and feature requests | GitHub Issues |
+|Asset|Recommended home|
+|-|-|
+|Source code|GitHub|
+|Installable Python distributions|PyPI|
+|User/manual/API documentation|GitHub Pages|
+|Tagged release source archive + DOI|Zenodo|
+|Large benchmark datasets|Zenodo or another research-data repository|
+|CI logs/tests|GitHub Actions|
+|Issues and feature requests|GitHub Issues|
 
 Avoid committing large Monte Carlo outputs directly to the Git repository.
 
----
+\---
 
-## 13. Suggested first public release sequence
+## 13\. Suggested first public release sequence
 
 Use this order:
 
@@ -392,3 +392,4 @@ python -m pip install cropmix
 ```
 
 and one canonical documentation site.
+
