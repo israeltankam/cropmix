@@ -4,9 +4,9 @@ from .backend import EpiPvrBackend
 from .models import (
     AccessPeriodAssay,
     AccessPeriodExperiment,
+    EpidemicProbabilityResult,
     EpiPvrFit,
     EpiPvrFitOptions,
-    EpidemicProbabilityResult,
     LocalEpidemicParameters,
 )
 

@@ -6,8 +6,8 @@ from dataclasses import dataclass
 
 import numpy as np
 from numba import njit, prange
+from scipy.ndimage import convolve, distance_transform_edt, gaussian_filter, label
 from scipy.signal import fftconvolve
-from scipy.ndimage import convolve, label, gaussian_filter, distance_transform_edt
 
 
 @dataclass
@@ -1033,7 +1033,7 @@ def _target_hni_swap_anneal(initial, N, target, seed, max_iter=250_000, toleranc
     temperature = 0.010
     cooling = 0.99996
     affected = np.empty(18, dtype=np.int64)
-    for step in range(max_iter):
+    for _step in range(max_iter):
         if abs(best - target) <= tolerance:
             break
         i = np.random.randint(n)
@@ -1121,7 +1121,7 @@ def generate_hni_target_ensemble(*, N, n_targets=25, replicates=8, seed=20260824
             ones = np.where(flat == 1)[0]
             z = rng.choice(zeros, size=n_perturb, replace=True)
             o = rng.choice(ones, size=n_perturb, replace=True)
-            for a, b in zip(z, o):
+            for a, b in zip(z, o, strict=False):
                 flat[a], flat[b] = flat[b], flat[a]
             labels, achieved = _target_hni_swap_anneal(flat.astype(np.int8), N, float(target), local_seed + 17)
             if abs(float(achieved) - float(target)) > tolerance:

@@ -15,7 +15,7 @@ source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
 python -m pip install -U pip
 python -m pip install -e ".[dev,viz,docs]"
 pytest
-ruff check .
+ruff check src tests
 ```
 
 Pull requests should keep public APIs backwards compatible within a minor release whenever practical.

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, replace
-from typing import Iterable
 
 from .biology import PathogenParameters, TransmissionDraw, Variety, VectorParameters
 from .design import MixtureDesign
@@ -63,7 +63,7 @@ class CropMixSystem:
                 "requires an explicit exposed-vector compartment and is intentionally not guessed."
             )
 
-    def with_kernel_scale(self, scale: float) -> "CropMixSystem":
+    def with_kernel_scale(self, scale: float) -> CropMixSystem:
         return replace(self, kernel=self.kernel.with_scale(scale))
 
     def point_transmission_draw(self) -> TransmissionDraw:
@@ -82,7 +82,7 @@ class CropMixSystem:
         vector: VectorParameters,
         pathogen: PathogenParameters,
         kernel: ExponentialKernel | None = None,
-    ) -> "CropMixSystem":
+    ) -> CropMixSystem:
         return cls(
             varieties=tuple(varieties),
             vector=vector,

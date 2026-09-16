@@ -35,7 +35,7 @@ class AccessPeriodAssay:
             raise ValidationError("Numbers tested must be positive.")
         if any(x < 0 for x in infected):
             raise ValidationError("Numbers infected cannot be negative.")
-        if any(i > n for i, n in zip(infected, tested)):
+        if any(i > n for i, n in zip(infected, tested, strict=False)):
             raise ValidationError("infected cannot exceed tested.")
         object.__setattr__(self, "duration", duration)
         object.__setattr__(self, "tested", tested)
@@ -86,7 +86,7 @@ class AccessPeriodExperiment:
         fixed_inoculation_for_acquisition: float,
         fixed_acquisition_for_inoculation: float,
         vectors_per_plant: int,
-    ) -> "AccessPeriodExperiment":
+    ) -> AccessPeriodExperiment:
         matrix = np.array(
             [
                 [-1.0, float(fixed_inoculation_for_acquisition)],
@@ -112,7 +112,7 @@ class AccessPeriodExperiment:
         fixed_when_latency_varies: tuple[float, float],
         fixed_when_inoculation_varies: tuple[float, float],
         vectors_per_plant: int,
-    ) -> "AccessPeriodExperiment":
+    ) -> AccessPeriodExperiment:
         # Columns are AAP, LAP, IAP; rows correspond to the varying component.
         matrix = np.array(
             [

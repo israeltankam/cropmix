@@ -50,7 +50,7 @@ class ExponentialKernel:
         if self.balance_max_iter <= 0:
             raise ValidationError("balance_max_iter must be positive.")
 
-    def with_scale(self, scale: float) -> "ExponentialKernel":
+    def with_scale(self, scale: float) -> ExponentialKernel:
         return replace(self, scale=float(scale))
 
     def prepare(self, field: Field) -> PreparedKernel:

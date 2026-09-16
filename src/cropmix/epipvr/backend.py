@@ -14,9 +14,9 @@ import pandas as pd
 from ..errors import EpiPvrError
 from .models import (
     AccessPeriodExperiment,
+    EpidemicProbabilityResult,
     EpiPvrFit,
     EpiPvrFitOptions,
-    EpidemicProbabilityResult,
     LocalEpidemicParameters,
 )
 
@@ -102,7 +102,7 @@ class EpiPvrBackend:
             summary = pd.read_csv(output_dir / "summary.csv")
             diagnostics_frame = pd.read_csv(output_dir / "diagnostics.csv")
             diagnostics = dict(
-                zip(diagnostics_frame["key"].astype(str), diagnostics_frame["value"].astype(str))
+                zip(diagnostics_frame["key"].astype(str), diagnostics_frame["value"].astype(str), strict=False)
             )
             bayes_path = output_dir / "bayes_r2.csv"
             bayes_r2 = pd.read_csv(bayes_path) if bayes_path.exists() else pd.DataFrame()

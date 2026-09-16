@@ -363,7 +363,7 @@ This avoids the reciprocity problem created by ordinary row normalization near o
 
 ```bash
 pytest
-ruff check .
+ruff check src tests
 python -m build
 python -m twine check dist/*
 ```

@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -64,7 +64,7 @@ class MixtureDesign:
             }
         )
 
-    def swapped(self, first: int, second: int) -> "MixtureDesign":
+    def swapped(self, first: int, second: int) -> MixtureDesign:
         if not (0 <= first < self.n_sites and 0 <= second < self.n_sites):
             raise IndexError("Swap indices are outside the field.")
         values = list(self.assignment)
@@ -94,7 +94,7 @@ class MixtureDesign:
         return ax
 
     @classmethod
-    def monoculture(cls, field: Field, variety: str) -> "MixtureDesign":
+    def monoculture(cls, field: Field, variety: str) -> MixtureDesign:
         return cls(field=field, assignment=tuple([variety] * field.n_sites))
 
     @classmethod
@@ -104,7 +104,7 @@ class MixtureDesign:
         counts: Mapping[str, int],
         *,
         seed: int | None = None,
-    ) -> "MixtureDesign":
+    ) -> MixtureDesign:
         counts = {str(name): int(count) for name, count in counts.items()}
         if any(count < 0 for count in counts.values()):
             raise ValidationError("Variety counts cannot be negative.")
@@ -120,7 +120,7 @@ class MixtureDesign:
         return cls(field=field, assignment=tuple(values))
 
     @classmethod
-    def from_grid(cls, grid: Sequence[Sequence[str]], *, spacing: float = 1.0) -> "MixtureDesign":
+    def from_grid(cls, grid: Sequence[Sequence[str]], *, spacing: float = 1.0) -> MixtureDesign:
         array = np.asarray(grid, dtype=object)
         if array.ndim != 2:
             raise ValidationError("grid must be two-dimensional.")
@@ -136,7 +136,7 @@ class MixtureDesign:
         y: str = "y",
         variety: str = "variety",
         site_id: str | None = "site_id",
-    ) -> "MixtureDesign":
+    ) -> MixtureDesign:
         required = [x, y, variety]
         missing = [column for column in required if column not in dataframe.columns]
         if missing:

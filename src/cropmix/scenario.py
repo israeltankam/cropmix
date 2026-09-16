@@ -33,15 +33,15 @@ class Inoculum:
             object.__setattr__(self, "sites", sites)
 
     @classmethod
-    def none(cls) -> "Inoculum":
+    def none(cls) -> Inoculum:
         return cls(count=0, sites=None)
 
     @classmethod
-    def random(cls, count: int = 1) -> "Inoculum":
+    def random(cls, count: int = 1) -> Inoculum:
         return cls(count=count)
 
     @classmethod
-    def fixed(cls, sites: tuple[int, ...] | list[int]) -> "Inoculum":
+    def fixed(cls, sites: tuple[int, ...] | list[int]) -> Inoculum:
         values = tuple(int(x) for x in sites)
         return cls(count=len(values), sites=values)
 
@@ -79,7 +79,7 @@ class VectorInoculum:
             object.__setattr__(self, "origin_weights", weights)
 
     @classmethod
-    def none(cls) -> "VectorInoculum":
+    def none(cls) -> VectorInoculum:
         return cls(0.0)
 
 

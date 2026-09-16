@@ -332,7 +332,7 @@ Before each release:
 
 ```bash
 pytest
-ruff check .
+ruff check src tests
 mkdocs build --strict
 python -m build
 python -m twine check dist/\*

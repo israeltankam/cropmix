@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field as dc_field
-from typing import Iterable, Sequence
+from collections.abc import Iterable, Sequence
+from dataclasses import dataclass
+from dataclasses import field as dc_field
 
 import numpy as np
 
@@ -131,7 +132,7 @@ class Field:
         site_ids: Sequence[str] | None = None,
         boundary: Iterable[Sequence[float]] | None = None,
         metadata: dict[str, object] | None = None,
-    ) -> "Field":
+    ) -> Field:
         return cls(
             coordinates=np.asarray(list(coordinates), dtype=float),
             site_ids=None if site_ids is None else tuple(site_ids),
@@ -147,7 +148,7 @@ class Field:
         *,
         spacing: float | tuple[float, float] = 1.0,
         origin: tuple[float, float] = (0.0, 0.0),
-    ) -> "Field":
+    ) -> Field:
         if rows <= 0 or columns <= 0:
             raise ValidationError("rows and columns must be positive.")
         if isinstance(spacing, tuple):
@@ -185,7 +186,7 @@ class Field:
         *,
         spacing: float | tuple[float, float] = 1.0,
         origin: tuple[float, float] = (0.0, 0.0),
-    ) -> "Field":
+    ) -> Field:
         mask = np.asarray(mask, dtype=bool)
         if mask.ndim != 2:
             raise ValidationError("mask must be two-dimensional.")
@@ -200,7 +201,7 @@ class Field:
         ox, oy = map(float, origin)
         coords = []
         ids = []
-        for r, c in zip(*np.where(mask)):
+        for r, c in zip(*np.where(mask), strict=False):
             coords.append((ox + c * sx, oy + r * sy))
             ids.append(f"r{r}c{c}")
         return cls(
@@ -216,7 +217,7 @@ class Field:
         *,
         spacing: float | tuple[float, float] = 1.0,
         origin: tuple[float, float] | None = None,
-    ) -> "Field":
+    ) -> Field:
         """Generate a regular planting lattice clipped to an arbitrary polygon.
 
         For already surveyed planting positions, prefer :meth:`from_coordinates`.

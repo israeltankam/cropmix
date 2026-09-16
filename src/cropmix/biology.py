@@ -82,7 +82,7 @@ class Variety:
         if not self.name or not self.name.strip():
             raise ValidationError("Variety name cannot be empty.")
 
-    def with_transmission(self, transmission: HostTransmission) -> "Variety":
+    def with_transmission(self, transmission: HostTransmission) -> Variety:
         """Return a copy with updated transmission rates."""
         return replace(self, transmission=transmission)
 
