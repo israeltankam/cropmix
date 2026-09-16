@@ -1,6 +1,12 @@
 # Changelog
 
 ## 0.2.2
+
+- First PyPI release.
+- Synchronised package metadata and release workflow.
+- CI and packaging validation fixes.
+
+## 0.2.1
 - Reframed mean-field matching as a consistency/adequacy diagnostic rather than biological kernel calibration.
 - Added `assess_mean_field_consistency()` and retained `calibrate_kernel()` as a deprecated alias.
 - Default simulation horizon is 300 d.
