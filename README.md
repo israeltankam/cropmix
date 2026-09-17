@@ -40,7 +40,7 @@ Cropmix 0.2 provides:
 - EpiPvr SPT and PT parameter inference through that bridge;
 - EpiPvr branching-process epidemic-probability calls through the same bridge.
 
-**Important:** PT parameters can be inferred through EpiPvr, but Cropmix 0.2 does **not** silently simulate PT spatial dynamics. A PT spatial engine needs an explicit exposed-vector compartment and will be added as a separately validated model.
+**Important:** PT parameters can be inferred through EpiPvr and used in Cropmix. The current spatial engine does not explicitly represent the latent period of the virus within the vector, but PT-like dynamics can be approximated using PT-derived acquisition and inoculation parameters together with a vector recovery/clearance rate set to zero. This is a reduced approximation of PT transmission rather than a mechanistic PT model with an explicit exposed-vector compartment.
 
 ## Installation
 

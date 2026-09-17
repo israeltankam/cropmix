@@ -40,7 +40,8 @@ The SPT engine includes:
 - virus-bearing vector mortality with healthy replacement;
 - vector loss of infectivity.
 
-The current engine does not include an explicit PT vector latent stage.
+The current engine does not include an explicit PT vector latent stage. PT-like dynamics can nevertheless be approximated using PT-derived acquisition
+and inoculation parameters with the vector recovery/clearance rate set to zero.
 
 ## Reproducible comparisons
 

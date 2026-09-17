@@ -76,4 +76,10 @@ Use `fit.require_usable()` to enforce a conservative diagnostic gate before para
 
 ## Important model boundary
 
-PT parameter inference does not imply PT spatial simulation. Cropmix 0.1 raises an explicit error if a PT `CropMixSystem` is passed to the spatial engine.
+PT parameters can be inferred through EpiPvr and used in Cropmix. The current
+spatial engine does not explicitly represent the latent period of the virus
+within the vector. However, PT-like dynamics can be approximated within the
+current engine by using the inferred acquisition and inoculation parameters
+together with a vector recovery/clearance rate equal to zero. This provides a
+reduced approximation of PT transmission rather than a mechanistic PT model
+with an explicit exposed-vector compartment.

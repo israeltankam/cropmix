@@ -52,7 +52,10 @@ For the current SPT spatial engine:
 - movement does not depend on cultivar attractiveness;
 - a `MixtureDesign` is simply one variety label per site;
 - arbitrary numbers of varieties are supported;
-- a PT system is rejected by the spatial engine until an exposed-vector compartment is implemented and validated.
+- the current spatial engine does not explicitly represent a latent
+  vector compartment; PT-like transmission can nevertheless be approximated
+  using PT-derived infection parameters with zero vector recovery/clearance,
+  while an explicit PT vector-latency model remains a separate mechanistic extension.
 
 ## Why the top-level API stays small
 
